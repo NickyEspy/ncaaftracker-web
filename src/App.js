@@ -3,6 +3,7 @@ import React, {
   useEffect
 } from 'react'
 import RankList from './RankList'
+import WeekSelector from './WeekSelector'
 import firebase from "firebase/app"
 import { getFirestore, collection, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
 import db from './firebase'
@@ -17,7 +18,7 @@ function App() {
 
   const [rankedTeams, setRankedTeams] = useState([])
   const [week, setWeek] = useState(9)
-  const weeksAvailable = [1, 2, 3 , 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  const weekList = [1, 2, 3 , 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 
   //This gets rankings for a particular week and sets them to rankedTeams
@@ -61,18 +62,14 @@ function App() {
 
 
 
-//TODO 1: Refactor buttons into a component
+//TODO 1: Refactor buttons into a component - Done
 //TODO 2: Style everything
 //TODO 3: Get school logos added
 //TODO 4: Get it live
 
   return (
     <>
-      { 
-        weeksAvailable.map((week) => {
-          return <button onClick={() => handleWeekChange(week)}>week {week}</button>
-        })
-      }
+      <WeekSelector weekList={weekList} handleWeekChange={handleWeekChange}/>
       <RankList rankedTeams={rankedTeams}/>
     </>
     )
