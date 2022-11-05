@@ -14,6 +14,7 @@ import LogoLink from './LogoLink'
 //Tutorial firebase: https://www.youtube.com/watch?v=3ZEz-iposj8
 //Firebase docs: https://firebase.google.com/docs/firestore/quickstart#web-version-9
 //Material UI Docs: https://mui.com/material-ui/react-box/
+//Youtube JS Caching tutorial: https://www.youtube.com/watch?v=uw6mWGNLhlo
 
 function App() {
 
