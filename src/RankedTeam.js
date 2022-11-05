@@ -1,10 +1,14 @@
 import React from 'react'
+import SchoolLogo from './SchoolLogo'
+
 
 export default function RankedTeam({rankedTeam}) {
+	//console.log(rankedTeam)
 	return (
-		<div>
-		{rankedTeam.ranking}. {rankedTeam.name}
-		</div>
+		<>
+			<SchoolLogo team={rankedTeam}/>
+			<h2>{rankedTeam.ranking}. {rankedTeam.name}</h2>
+			<p>{rankedTeam.totalWins} - {rankedTeam.totalLosses}</p>
+		</>
 	)
 }
-

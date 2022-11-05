@@ -7,11 +7,13 @@ import WeekSelector from './WeekSelector'
 import firebase from "firebase/app"
 import { getFirestore, collection, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
 import db from './firebase'
+import LogoLink from './LogoLink'
 
 
 //Tutorial: https://www.youtube.com/watch?v=hQAHSlTtcmY
 //Tutorial firebase: https://www.youtube.com/watch?v=3ZEz-iposj8
 //Firebase docs: https://firebase.google.com/docs/firestore/quickstart#web-version-9
+//Material UI Docs: https://mui.com/material-ui/react-box/
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
     const teams = []
     querySnapshot.forEach((doc) => {
       const team = doc.data()
+      team.logoLink = LogoLink(doc.id)
       teams.push(team)
     });
     const sortedTeams = sortByRanking(teams)
@@ -37,7 +40,6 @@ function App() {
  useEffect(() => {
   getWeeklyRankings()
  }, [week])
-
 
  //This sorts
  const sortByRanking = (teams)  => {
@@ -63,9 +65,10 @@ function App() {
 
 
 //TODO 1: Refactor buttons into a component - Done
-//TODO 2: Style everything
-//TODO 3: Get school logos added
-//TODO 4: Get it live
+//TODO 2: Style everything 
+//TODO 3: Get school logos added - Done
+//TODO 4: Store rankings in cache
+//TODO 5: Get it live
 
   return (
     <>
