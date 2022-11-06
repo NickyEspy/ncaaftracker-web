@@ -8,6 +8,7 @@ import firebase from "firebase/app"
 import { getFirestore, collection, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
 import db from './firebase'
 import LogoLink from './LogoLink'
+import { cache, cacheTime, cacheTimer, getCacheTimer } from './CacheHelper'
 
 
 //Tutorial: https://www.youtube.com/watch?v=hQAHSlTtcmY
@@ -18,13 +19,10 @@ import LogoLink from './LogoLink'
 
 function App() {
 
-
   const [rankedTeams, setRankedTeams] = useState([])
   const [week, setWeek] = useState(9)
   const weekList = [1, 2, 3 , 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
-
-  //This gets rankings for a particular week and sets them to rankedTeams
   const getWeeklyRankings = async () => {
     const querySnapshot = await getDocs(collection(db, "WeeklyRankings", `${week}`, "Rankings"))
     const teams = []
@@ -34,13 +32,19 @@ function App() {
       teams.push(team)
     });
     const sortedTeams = sortByRanking(teams)
-    setRankedTeams(sortedTeams)
+    return sortedTeams
   }
 
 //This calls getWeeklyRankings every time week is updated
- useEffect(() => {
-  getWeeklyRankings()
- }, [week])
+useEffect(() => {
+  fetchAndSetRankedTeams()
+}, [week])
+
+ const fetchAndSetRankedTeams = async () => {
+    const cacheForWeek = await fetchCacheForWeek(week, cacheTime)
+    cache[week] = cacheForWeek
+    setRankedTeams(cacheForWeek.rankedTeams)
+ }
 
  //This sorts
  const sortByRanking = (teams)  => {
@@ -62,13 +66,28 @@ function App() {
   setWeek(week)
  }
 
-
-
+const fetchCacheForWeek = async (week, time) => {
+  const now = new Date().getTime()
+  if (cache[week] == undefined || 
+      cache[week].rankedTeams == undefined ||
+      cache[week].rankedTeams == null ||
+      cache[week].cacheTimer < now
+      ) 
+  {
+    const cacheForWeek = {}
+    const fetchedRankedTeams = await getWeeklyRankings()
+    cacheForWeek.rankedTeams = fetchedRankedTeams
+    cacheForWeek.cacheTimer = getCacheTimer(time)
+    return cacheForWeek
+  } else {
+    return cache[week]
+  }
+}
 
 //TODO 1: Refactor buttons into a component - Done
 //TODO 2: Style everything 
 //TODO 3: Get school logos added - Done
-//TODO 4: Store rankings in cache
+//TODO 4: Store rankings in cache - Done
 //TODO 5: Get it live
 
   return (
