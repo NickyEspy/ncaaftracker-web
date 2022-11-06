@@ -3,7 +3,6 @@ import SchoolLogo from './SchoolLogo'
 
 
 export default function RankedTeam({rankedTeam}) {
-	//console.log(rankedTeam)
 	return (
 		<>
 			<SchoolLogo team={rankedTeam}/>
