@@ -7,7 +7,7 @@ import WeekSelector from './WeekSelector'
 import firebase from "firebase/app"
 import { getFirestore, collection, getDocs, doc, getDoc, orderBy, limit } from "firebase/firestore";
 import db from './firebase'
-import LogoLink from './LogoLink'
+import LogoLink from './components/LogoLink'
 
 
 //Tutorial: https://www.youtube.com/watch?v=hQAHSlTtcmY
